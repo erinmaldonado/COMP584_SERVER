@@ -1,10 +1,19 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using WorldModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<Comp584DbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseSqlServer(connectionString);
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -27,8 +36,8 @@ if (app.Environment.IsDevelopment())
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
         });
 }
-app.UseCors(options =>
-    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseAuthorization();
 
