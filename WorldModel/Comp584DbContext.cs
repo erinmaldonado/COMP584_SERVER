@@ -28,7 +28,7 @@ public partial class Comp584DbContext : DbContext
         
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Comp584Database"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
         {
             
