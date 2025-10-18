@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using COMP584_SERVER.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,45 @@ namespace COMP584_SERVER.Controllers
     [ApiController]
     public class CountriesController(Comp584DbContext context) : ControllerBase
     {
-
         // GET: api/Countries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
             return await context.Countries.ToListAsync();
+        }
+
+        [HttpGet("population")]
+        public async Task<ActionResult<IEnumerable<CountryPopulation>>> GetCountryPopulation()
+        {
+            return await context.Countries.
+                Select(c => new CountryPopulation {
+                    Name = c.Name,
+                    Iso2 = c.Iso2,
+                    Iso3 = c.Iso3,
+                    Population = c.Cities.Sum(city => city.Population)
+                }).
+                ToListAsync();
+        }
+
+        [HttpGet("population/{id}")]
+        public ActionResult<CountryPopulation> GetCountryPopulation(int id)
+        {
+            var x = context.Countries.Select(country => new CountryPopulation
+            {
+                Id = country.Id,
+                Name = country.Name,
+                Iso2 = country.Iso2,
+                Iso3 = country.Iso3,
+                Population = country.Cities.Sum(city => city.Population)
+            });
+            return context.Countries.Select(country => new CountryPopulation
+            {
+                Id = country.Id,
+                Name = country.Name,
+                Iso2 = country.Iso2,
+                Iso3 = country.Iso3,
+                Population = country.Cities.Sum(city => city.Population)
+            }).Single(c => c.Id == id);
         }
 
         // GET: api/Countries/5

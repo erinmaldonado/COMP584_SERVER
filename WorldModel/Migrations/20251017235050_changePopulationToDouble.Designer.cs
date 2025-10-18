@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorldModel;
 
@@ -10,9 +11,11 @@ using WorldModel;
 namespace WorldModel.Migrations
 {
     [DbContext(typeof(Comp584DbContext))]
-    partial class Comp584DbContextModelSnapshot : ModelSnapshot
+    [Migration("20251017235050_changePopulationToDouble")]
+    partial class changePopulationToDouble
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,8 +52,8 @@ namespace WorldModel.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("name");
 
-                    b.Property<decimal>("Population")
-                        .HasColumnType("decimal(18,2)")
+                    b.Property<int>("Population")
+                        .HasColumnType("int")
                         .HasColumnName("population");
 
                     b.HasKey("Id");
