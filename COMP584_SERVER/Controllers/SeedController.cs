@@ -90,7 +90,6 @@ namespace COMP584_SERVER.Controllers
             await userManager.CreateAsync(regularUser, configuration["DefaultPasswords:user"]!);
             await userManager.AddToRoleAsync(regularUser, registeredUser);
 
-
             return Ok();
         }
 
