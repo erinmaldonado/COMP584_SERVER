@@ -1,5 +1,8 @@
 using COMP584_SERVER;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WorldModel;
@@ -24,6 +27,29 @@ builder.Services.AddIdentity<WorldModelUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<Comp584DbContext>();
 
 builder.Services.AddScoped<JwtHandler>();
+builder.Services.AddAuthentication(c =>
+{
+    c.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    c.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(c =>
+
+{
+    c.TokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        //ValidLifetime = builder.Configuration["Jwt:ExpiryInMinutes"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!))
+
+    };
+});
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
