@@ -1,3 +1,4 @@
+using COMP584_SERVER;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -21,6 +22,8 @@ builder.Services.AddIdentity<WorldModelUser, IdentityRole>(options =>
 
 })
     .AddEntityFrameworkStores<Comp584DbContext>();
+
+builder.Services.AddScoped<JwtHandler>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

@@ -14,7 +14,8 @@ namespace COMP584_SERVER.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class SeedController(Comp584DbContext context, IHostEnvironment environment,
-        RoleManager<IdentityRole> roleManager, UserManager<WorldModelUser> userManager, IConfiguration configuration) : ControllerBase
+        RoleManager<IdentityRole> roleManager, UserManager<WorldModelUser> userManager, 
+        IConfiguration configuration) : ControllerBase
     {
         string _pathName = Path.Combine(environment.ContentRootPath, "Data/worldcities.csv");
 
